@@ -1,0 +1,116 @@
+html, body {
+  height: 100%;
+  width:100%;
+  color:#f0f0f0;
+}
+
+body {
+  background:url('grass.png') no-repeat center bottom;
+  background-size: cover;
+}
+
+.content {
+  position: absolute;
+  top:47%;
+  left :50%;
+  transform:translate(-50%, -50%);
+  text-align:center;
+}
+
+h1 {
+  font-size:45px;
+  font-family:'Lineal-Thin';
+}
+
+.grave {
+  width: 420px;
+}
+
+
+@font-face {
+  font-family: 'Avara-Bold';
+  src: url('fonts/Avara-Bold.otf') format('opentype');
+
+}
+@font-face {
+  
+  font-family: 'Lineal-Thin';
+  src: url('fonts/Lineal-Thin.otf') format('opentype');
+
+}
+
+
+
+
+.gravetext {
+  position:absolute;
+  top:50%;
+  left :50%;
+  transform: translate(-50%, -50%);
+  width:28%;     
+  text-align:center;
+  font-family:'Avara-Bold'; 
+  font-size:16px;
+  color: white;
+  background-color: transparent;
+  border: none;
+  caret-color: white;
+  white-space:pre-wrap;
+  -webkit-box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
+  box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
+}
+
+
+.itembar {
+  position: fixed;
+  bottom:10px;
+  left:50%;
+  transform: translateX(-50%);
+  padding:10px 20px;
+  border-radius:10px;
+}
+
+.itembar input[type="file"] {
+  display:none;
+}
+
+.upload {
+  padding:10px 20px;
+  border-radius:5px;
+  cursor:pointer;
+  font-family:'Lineal-Thin';
+  user-select:none;
+  text-align:center;
+  -webkit-box-shadow :6px 4px 11px 6px rgba(0,0,0,0.64); 
+  box-shadow:6px 4px 11px 6px rgba(0,0,0,0.64);
+}
+
+
+
+
+.uploaded {
+  width: 100px;
+  height: auto;
+  position: absolute;
+  cursor: grab;
+}
+
+.uploadedandHP {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); 
+  cursor: grab;
+  width: 100px;   
+  height: auto; 
+}
+
+
+
+.HP {
+  position: absolute;
+  width: 100px;   
+  height: 5px;
+  background: rgb(29, 156, 29);
+  border-radius: 5px;
+}

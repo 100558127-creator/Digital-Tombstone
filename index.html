@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Tombstone</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+  <div class="content">
+    <h1>Build a digital tomb for what has faded</h1>
+    <div class="grave-container">
+      <img src="grave.png" alt="Grave" class="grave" id="grave">
+      <div class="gravetext" contenteditable="true">Write your memory here...</div> <!-- edit sth. -->
+    </div>
+  </div>
+
+   <div class="itembar">
+    <label class="upload">
+      Put your memories here.
+      <input type="file" id="upload" accept="image/*">
+    </label>
+    
+  </div>
+  <div id="itemarea"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
