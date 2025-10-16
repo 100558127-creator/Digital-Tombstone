@@ -15,6 +15,7 @@ class DreamGardenMemorial {
     this.carvingCanvas = null;
     this.carvingCtx = null;
     this.carvingHistory = []; // 存储雕刻历史，用于撤销
+    this.tombstoneText = ''; // 存储墓碑文字
     this.itembarDragOffset = { x: 0, y: 0 };
     this.isDragging = false; // 简化的拖拽标志
     this.dragJustEnded = false; // 拖拽刚结束标志
@@ -27,6 +28,7 @@ class DreamGardenMemorial {
     this.setupEventListeners();
     this.setupCandlePlacement();
     this.setupItembarDrag();
+    this.setupTombstoneTextEditor();
     this.loadUserData();
     this.loadMemories();
     this.loadPublicMemorials();
@@ -1967,8 +1969,69 @@ class DreamGardenMemorial {
     }
   }
 
+  // 墓碑文字编辑器相关方法
+  setupTombstoneTextEditor() {
+    const tombstoneTextArea = document.getElementById('tombstone-text');
+    if (!tombstoneTextArea) {
+      console.log('Tombstone text area not found!');
+      return;
+    }
+    console.log('Tombstone text area found and setting up...');
 
+    // 从本地存储加载已保存的文字
+    const savedText = localStorage.getItem('dreamGardenTombstoneText');
+    if (savedText) {
+      this.tombstoneText = savedText;
+      tombstoneTextArea.value = savedText;
+    }
 
+    // 确保文本框可以被编辑
+    tombstoneTextArea.disabled = false;
+    tombstoneTextArea.readOnly = false;
+
+    // 监听文字变化
+    tombstoneTextArea.addEventListener('input', (e) => {
+      console.log('Text input detected:', e.target.value);
+      this.tombstoneText = e.target.value;
+      this.saveTombstoneText();
+    });
+
+    // 监听焦点事件
+    tombstoneTextArea.addEventListener('focus', () => {
+      console.log('Tombstone text focused');
+      this.showNotification('Editing epitaph...', 'info');
+    });
+
+    tombstoneTextArea.addEventListener('blur', () => {
+      console.log('Tombstone text blurred');
+      if (this.tombstoneText.trim()) {
+        this.showNotification('Epitaph saved!', 'success');
+      }
+    });
+
+    // 添加点击事件确保可以聚焦
+    tombstoneTextArea.addEventListener('click', () => {
+      console.log('Tombstone text clicked');
+      tombstoneTextArea.focus();
+    });
+  }
+
+  saveTombstoneText() {
+    localStorage.setItem('dreamGardenTombstoneText', this.tombstoneText);
+  }
+
+  getTombstoneText() {
+    return this.tombstoneText;
+  }
+
+  setTombstoneText(text) {
+    this.tombstoneText = text;
+    const tombstoneTextArea = document.getElementById('tombstone-text');
+    if (tombstoneTextArea) {
+      tombstoneTextArea.value = text;
+    }
+    this.saveTombstoneText();
+  }
 
 }
 
