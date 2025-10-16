@@ -1971,53 +1971,79 @@ class DreamGardenMemorial {
 
   // 墓碑文字编辑器相关方法
   setupTombstoneTextEditor() {
-    const tombstoneTextArea = document.getElementById('tombstone-text');
-    if (!tombstoneTextArea) {
-      console.log('Tombstone text area not found!');
-      return;
-    }
-    console.log('Tombstone text area found and setting up...');
-
-    // 从本地存储加载已保存的文字
-    const savedText = localStorage.getItem('dreamGardenTombstoneText');
-    if (savedText) {
-      this.tombstoneText = savedText;
-      tombstoneTextArea.value = savedText;
-    }
-
-    // 确保文本框可以被编辑
-    tombstoneTextArea.disabled = false;
-    tombstoneTextArea.readOnly = false;
-
-    // 监听文字变化
-    tombstoneTextArea.addEventListener('input', (e) => {
-      console.log('Text input detected:', e.target.value);
-      this.tombstoneText = e.target.value;
-      this.saveTombstoneText();
-    });
-
-    // 监听焦点事件
-    tombstoneTextArea.addEventListener('focus', () => {
-      console.log('Tombstone text focused');
-      this.showNotification('Editing epitaph...', 'info');
-    });
-
-    tombstoneTextArea.addEventListener('blur', () => {
-      console.log('Tombstone text blurred');
-      if (this.tombstoneText.trim()) {
-        this.showNotification('Epitaph saved!', 'success');
+    // 延迟执行，确保DOM完全加载
+    setTimeout(() => {
+      const tombstoneTextArea = document.getElementById('tombstone-text');
+      if (!tombstoneTextArea) {
+        console.log('Tombstone text area not found!');
+        return;
       }
-    });
+      console.log('Tombstone text area found and setting up...');
 
-    // 添加点击事件确保可以聚焦
-    tombstoneTextArea.addEventListener('click', () => {
-      console.log('Tombstone text clicked');
-      tombstoneTextArea.focus();
-    });
+      // 从本地存储加载已保存的文字
+      try {
+        const savedText = localStorage.getItem('dreamGardenTombstoneText');
+        if (savedText) {
+          this.tombstoneText = savedText;
+          tombstoneTextArea.value = savedText;
+        }
+      } catch (error) {
+        console.log('LocalStorage not available:', error);
+      }
+
+      // 确保文本框可以被编辑
+      tombstoneTextArea.disabled = false;
+      tombstoneTextArea.readOnly = false;
+      tombstoneTextArea.setAttribute('contenteditable', 'true');
+
+      // 监听文字变化
+      tombstoneTextArea.addEventListener('input', (e) => {
+        console.log('Text input detected:', e.target.value);
+        this.tombstoneText = e.target.value;
+        this.saveTombstoneText();
+      });
+
+      // 监听焦点事件
+      tombstoneTextArea.addEventListener('focus', () => {
+        console.log('Tombstone text focused');
+        if (this.showNotification) {
+          this.showNotification('Editing epitaph...', 'info');
+        }
+      });
+
+      tombstoneTextArea.addEventListener('blur', () => {
+        console.log('Tombstone text blurred');
+        if (this.tombstoneText && this.tombstoneText.trim()) {
+          if (this.showNotification) {
+            this.showNotification('Epitaph saved!', 'success');
+          }
+        }
+      });
+
+      // 添加点击事件确保可以聚焦
+      tombstoneTextArea.addEventListener('click', (e) => {
+        console.log('Tombstone text clicked');
+        e.preventDefault();
+        e.stopPropagation();
+        tombstoneTextArea.focus();
+      });
+
+      // 添加键盘事件
+      tombstoneTextArea.addEventListener('keydown', (e) => {
+        console.log('Key pressed:', e.key);
+        e.stopPropagation();
+      });
+
+    }, 100);
   }
 
   saveTombstoneText() {
-    localStorage.setItem('dreamGardenTombstoneText', this.tombstoneText);
+    try {
+      localStorage.setItem('dreamGardenTombstoneText', this.tombstoneText);
+    } catch (error) {
+      console.log('Cannot save to localStorage:', error);
+      // 如果localStorage不可用，可以尝试其他存储方式
+    }
   }
 
   getTombstoneText() {
@@ -2044,9 +2070,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // 恢复时间胶囊调度
     app.restoreScheduledTimeCapsules();
     console.log('Time capsule scheduler restored');
+    
+    // 额外的墓碑文本框初始化，确保在GitHub Pages上工作
+    setTimeout(() => {
+      const tombstoneText = document.getElementById('tombstone-text');
+      if (tombstoneText) {
+        tombstoneText.style.pointerEvents = 'auto';
+        tombstoneText.style.zIndex = '999';
+        console.log('Tombstone text extra initialization completed');
+      }
+    }, 500);
+    
   } catch (error) {
     console.error('Error initializing Dream Garden Memorial:', error);
   }
+});
+
+// 备用初始化，确保在GitHub Pages上工作
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const tombstoneText = document.getElementById('tombstone-text');
+    if (tombstoneText && !tombstoneText.hasAttribute('data-initialized')) {
+      tombstoneText.setAttribute('data-initialized', 'true');
+      tombstoneText.disabled = false;
+      tombstoneText.readOnly = false;
+      console.log('Tombstone text backup initialization completed');
+    }
+  }, 1000);
 });
 
 // HP衰减系统（模拟）
